@@ -7,6 +7,8 @@ defmodule EscolaWeb.Router do
 
   scope "/api", EscolaWeb do
     pipe_through :api
+
+    resources "/schools", SchoolController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
