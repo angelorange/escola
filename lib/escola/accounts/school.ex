@@ -11,10 +11,11 @@ defmodule Escola.Accounts.School do
     timestamps()
   end
 
+  @required ~w(name cnpj address partnership)a
   @doc false
   def changeset(school, attrs) do
     school
-    |> cast(attrs, [:name, :address, :cnpj, :partnership])
-    |> validate_required([:name, :address, :cnpj, :partnership])
+    |> cast(attrs, @required)
+    |> validate_required(@required)
   end
 end
