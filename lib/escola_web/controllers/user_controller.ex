@@ -14,7 +14,7 @@ defmodule EscolaWeb.UserController do
   def create(conn, %{"user" => user_params}) do
     with {:ok, params} <- EscolaWeb.Validator.validate(EscolaWeb.Validators.User.Create, user_params),
       {:ok, %User{} = user} <- Accounts.create_user(params) do
-        IO.inspect params
+
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.user_path(conn, :show, user))

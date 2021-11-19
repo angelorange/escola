@@ -10,11 +10,12 @@ defmodule Escola.Accounts.User do
     timestamps()
   end
 
+  @required ~w(name password email)a
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :password, :email])
-    |> validate_required([:name, :password, :email])
+    |> cast(attrs, @required)
+    |> validate_required(@required)
     |> unique_constraint(:email)
   end
 end
