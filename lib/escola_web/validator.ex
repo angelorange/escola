@@ -4,7 +4,6 @@ defmodule EscolaWeb.Validator do
   """
 
   alias Ecto.Changeset
-  alias Escola.Error
 
   @callback changeset(map()) :: Changeset.t()
 
