@@ -46,7 +46,7 @@ defmodule EscolaWeb.UserControllerTest do
 
   describe "delete user" do
 
-    test "deletes chosen user", %{conn: conn, user: user} do
+    test "deletes chosen user", %{conn: conn} do
     user = insert(:user)
       conn = delete(conn, Routes.user_path(conn, :delete, user))
       assert response(conn, 204)
