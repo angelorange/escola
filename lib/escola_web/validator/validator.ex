@@ -26,6 +26,6 @@ defmodule EscolaWeb.Validator do
   defp handle_validation({:ok, struct}), do: {:ok, Map.from_struct(struct)}
 
   defp handle_validation({:error, changeset}) do
-    {:error, Error.new(:bad_request, changeset)}
+    {:error,  changeset}
   end
 end
