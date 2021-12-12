@@ -17,7 +17,6 @@ defmodule EscolaWeb.UserView do
       id: user.id,
       name: user.name,
       email: user.email,
-      password: user.password
     }
   end
 end

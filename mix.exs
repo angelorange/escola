@@ -44,6 +44,7 @@ defmodule Escola.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:ex_machina, "~> 2.7.0"},
+      {:bcrypt_elixir, "~> 2.0"},
       {:plug_cowboy, "~> 2.5"}
     ]
   end
@@ -59,7 +60,7 @@ defmodule Escola.MixProject do
       setup: ["deps.get", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: ["ecto.drop", "ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]
   end
 end

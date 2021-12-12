@@ -8,11 +8,11 @@ defmodule Escola.AccountsTest do
   describe "schools" do
     alias Escola.Accounts.School
 
-    @invalid_attrs %{address: nil, cnpj: nil, name: nil, partnership: nil}
-
     test "list_schools/0 returns all schools" do
       school = insert(:school)
+
       assert [subject] = Accounts.list_schools()
+      assert subject.id == school.id
     end
 
     test "get_school!/1 returns the school with given id" do
@@ -84,12 +84,11 @@ defmodule Escola.AccountsTest do
   describe "users" do
     alias Escola.Accounts.User
 
-
-    @invalid_attrs %{email: nil, name: nil, password: nil}
-
     test "list_users/0 returns all users" do
       user = insert(:user)
+
       assert [subject] = Accounts.list_users()
+      assert subject.id == user.id
     end
 
     test "get_user!/1 returns the user with given id" do
@@ -98,12 +97,12 @@ defmodule Escola.AccountsTest do
     end
 
     test "create_user/1 with valid data creates a user" do
-      expected = params_for(:user)
+      expected = params_for(:user, email: "M@gm.com ")
 
       assert {:ok, %User{} = user} = Accounts.create_user(expected)
-      assert user.email == expected.email
+      assert user.email == "m@gm.com"
       assert user.name == expected.name
-      assert user.password == expected.password
+      assert Bcrypt.verify_pass(expected.password, user.password)
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -122,7 +121,7 @@ defmodule Escola.AccountsTest do
       assert {:ok, %User{} = user} = Accounts.update_user(user, updated)
       assert user.email == updated.email
       assert user.name == updated.name
-      assert user.password == updated.password
+      assert Bcrypt.verify_pass(updated.password, user.password)
     end
 
     test "update_user/2 with invalid data returns error changeset" do
@@ -136,7 +135,7 @@ defmodule Escola.AccountsTest do
       assert {:error, %Ecto.Changeset{}} = Accounts.update_user(user, params)
       assert user == Accounts.get_user!(user.id)
     end
-
+''
     test "delete_user/1 deletes the user" do
       user = insert(:user)
       assert {:ok, %User{}} = Accounts.delete_user(user)

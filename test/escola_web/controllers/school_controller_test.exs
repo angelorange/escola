@@ -43,7 +43,7 @@ defmodule EscolaWeb.SchoolControllerTest do
   describe "update school" do
     setup [:create_school]
 
-    test "renders school when data is valid", %{conn: conn, school: %School{id: id} = school} do
+    test "renders school when data is valid", %{conn: conn, school: %School{id: _id} = school} do
       params = %{
         name: school.name,
         cnpj: school.cnpj,

@@ -1,8 +1,6 @@
 defmodule EscolaWeb.UserControllerTest do
   use EscolaWeb.ConnCase
 
-  alias Escola.Accounts.User
-
   import Escola.Factory
 
   setup %{conn: conn} do
@@ -25,7 +23,6 @@ defmodule EscolaWeb.UserControllerTest do
       assert expected = json_response(conn, 201)["data"]
       assert expected["name"] == user.name
       assert expected["email"] == user.email
-      assert expected["password"] == user.password
     end
   end
 
