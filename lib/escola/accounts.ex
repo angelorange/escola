@@ -197,4 +197,27 @@ defmodule Escola.Accounts do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+
+  @doc """
+  Verify a user based on email and password
+  """
+  @spec auth_user(String.t(), String.t()) :: {:ok, User.t()} | {:error, :unauthorized}
+  def auth_user(email, password) do
+    user = get_user_by_email(email)
+
+    case Bcrypt.verify_pass(password, user.password) do
+      true -> {:ok, user}
+      false -> {:error, :unauthorized}
+    end
+  end
+
+  @doc """
+  Returns User by Email
+  """
+  @spec get_user_by_email(String.t()) :: User.t() | nil
+  def get_user_by_email(email) do
+    User
+    |> where([u], u.email == ^email)
+    |> Repo.one()
+  end
 end

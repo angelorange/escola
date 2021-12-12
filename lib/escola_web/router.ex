@@ -10,6 +10,8 @@ defmodule EscolaWeb.Router do
 
     resources "/schools", SchoolController, except: [:new, :edit]
     resources "/users", UserController, except: [:new, :edit]
+
+    post "/token", TokenController, :create
   end
 
   if Mix.env() in [:dev, :test] do

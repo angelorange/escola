@@ -1,5 +1,5 @@
 defmodule EscolaWeb.UserControllerTest do
-  use EscolaWeb.ConnCase
+  use EscolaWeb.ConnCase, async: true
 
   import Escola.Factory
 
@@ -31,8 +31,7 @@ defmodule EscolaWeb.UserControllerTest do
     user = insert(:user)
       params = %{
         name: user.name,
-        email: user.email,
-        password: user.password
+        email: user.email
       }
 
       conn = put(conn, Routes.user_path(conn, :update, user), user: params)

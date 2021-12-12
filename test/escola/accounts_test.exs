@@ -1,5 +1,5 @@
 defmodule Escola.AccountsTest do
-  use Escola.DataCase
+  use Escola.DataCase, async: true
 
   alias Escola.Accounts
 
@@ -116,12 +116,11 @@ defmodule Escola.AccountsTest do
 
     test "update_user/2 with valid data updates the user" do
       user = insert(:user)
-      updated = %{email: "vitor@gmail.com", name: "vitor", password: "vitor123"}
+      updated = %{email: "vitor@gmail.com", name: "vitor"}
 
       assert {:ok, %User{} = user} = Accounts.update_user(user, updated)
       assert user.email == updated.email
       assert user.name == updated.name
-      assert Bcrypt.verify_pass(updated.password, user.password)
     end
 
     test "update_user/2 with invalid data returns error changeset" do

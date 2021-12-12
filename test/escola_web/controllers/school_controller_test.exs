@@ -1,5 +1,5 @@
 defmodule EscolaWeb.SchoolControllerTest do
-  use EscolaWeb.ConnCase
+  use EscolaWeb.ConnCase, async: true
 
   alias Escola.Accounts.School
 
