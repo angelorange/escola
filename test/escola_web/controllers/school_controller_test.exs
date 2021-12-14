@@ -1,26 +1,34 @@
 defmodule EscolaWeb.SchoolControllerTest do
   use EscolaWeb.ConnCase, async: true
 
-  alias Escola.Accounts.School
-
   import Escola.Factory
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    user = insert(:user)
+
+    {:ok, conn: put_req_header(conn, "accept", "application/json"),  user: user}
   end
 
   describe "index" do
-    test "lists all schools", %{conn: conn} do
-      conn = get(conn, Routes.school_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
+    test "lists all schools", %{conn: conn, user: user} do
+      school = insert(:school)
+
+      conn =
+        login(conn, user)
+        |> get(Routes.school_path(conn, :index))
+
+      assert [subject] = json_response(conn, 200)["data"]
+      assert subject["id"] == school.id
     end
   end
 
   describe "create school" do
-    test "renders school when data is valid", %{conn: conn} do
+    test "renders school when data is valid", %{conn: conn, user: user} do
       school = params_for(:school)
 
-      conn = post(conn, Routes.school_path(conn, :create), school: school)
+      conn =
+        login(conn, user)
+        |> post(Routes.school_path(conn, :create), school: school)
 
       assert expected = json_response(conn, 201)["data"]
       assert expected["address"] == school.address
@@ -28,14 +36,18 @@ defmodule EscolaWeb.SchoolControllerTest do
       assert expected["name"] == school.name
     end
 
-    test "renders errors when data is invalid", %{conn: conn} do
+    test "renders errors when data is invalid", %{conn: conn, user: user} do
       params = %{
         name: nil,
         address: nil,
         cnpj: nil,
         partnership: nil
       }
-      conn = post(conn, Routes.school_path(conn, :create), school: params)
+
+      conn =
+        login(conn, user)
+        |> post(Routes.school_path(conn, :create), school: params)
+
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -43,14 +55,16 @@ defmodule EscolaWeb.SchoolControllerTest do
   describe "update school" do
     setup [:create_school]
 
-    test "renders school when data is valid", %{conn: conn, school: %School{id: _id} = school} do
+    test "renders school when data is valid", %{conn: conn, school: school, user: user} do
       params = %{
         name: school.name,
         cnpj: school.cnpj,
         address: school.address,
         partnership: school.partnership
       }
-      conn = put(conn, Routes.school_path(conn, :update, school), school: params)
+      conn =
+        login(conn, user)
+        |> put(Routes.school_path(conn, :update, school), school: params)
 
       assert expected = json_response(conn, 200)["data"]
       assert expected["name"] == params.name
@@ -59,14 +73,16 @@ defmodule EscolaWeb.SchoolControllerTest do
       assert expected["address"] == params.address
     end
 
-    test "renders errors when data is invalid", %{conn: conn, school: school} do
+    test "renders errors when data is invalid", %{conn: conn, school: school, user: user} do
       params = %{
         name: nil,
         address: nil,
         cnpj: nil,
         partnership: nil
       }
-      conn = put(conn, Routes.school_path(conn, :update, school), school: params)
+      conn =
+        login(conn, user)
+        |> put(Routes.school_path(conn, :update, school), school: params)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -74,8 +90,10 @@ defmodule EscolaWeb.SchoolControllerTest do
   describe "delete school" do
     setup [:create_school]
 
-    test "deletes chosen school", %{conn: conn, school: school} do
-      conn = delete(conn, Routes.school_path(conn, :delete, school))
+    test "deletes chosen school", %{conn: conn, school: school, user: user} do
+      conn =
+        login(conn, user)
+        |> delete(Routes.school_path(conn, :delete, school))
       assert response(conn, 204)
 
       assert_error_sent 404, fn ->

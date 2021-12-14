@@ -5,13 +5,21 @@ defmodule EscolaWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :jwt do
+    plug EscolaWeb.Plugs.JwtAuth
+  end
+
   scope "/api", EscolaWeb do
     pipe_through :api
 
+    post "/token", TokenController, :create
+  end
+
+  scope "/api", EscolaWeb do
+    pipe_through [:api, :jwt]
+
     resources "/schools", SchoolController, except: [:new, :edit]
     resources "/users", UserController, except: [:new, :edit]
-
-    post "/token", TokenController, :create
   end
 
   if Mix.env() in [:dev, :test] do

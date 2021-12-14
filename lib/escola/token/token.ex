@@ -1,6 +1,7 @@
 defmodule Escola.Token do
 
   alias Escola.Accounts.User
+  alias Phoenix.Token
 
   @signing_salt "octosell_api"
   # token for 2 week
@@ -11,7 +12,7 @@ defmodule Escola.Token do
   """
   @spec sign(User.t()) :: binary()
   def sign(%User{} = user) do
-    Phoenix.Token.sign(EscolaWeb.Endpoint, @signing_salt, %{user_id: user.id})
+    Token.sign(EscolaWeb.Endpoint, @signing_salt, user.id)
   end
 
 
@@ -20,11 +21,9 @@ defmodule Escola.Token do
   - Verify token signature
   - Verify expiration time
   """
-  @spec verify(String.t()) :: {:ok, any()} | {:error, :unauthenticated}
+  @spec verify(String.t()) :: {:ok, Integer.t()} | {:error, :unauthenticated}
   def verify(token) do
-    case Phoenix.Token.verify(EscolaWeb.Endpoint, @signing_salt, token,
-             max_age: @token_age_secs
-           ) do
+    case Token.verify(EscolaWeb.Endpoint, @signing_salt, token, max_age: @token_age_secs) do
       {:ok, data} -> {:ok, data}
       _error -> {:error, :unauthenticated}
     end

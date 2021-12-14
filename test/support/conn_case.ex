@@ -23,6 +23,7 @@ defmodule EscolaWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import EscolaWeb.ConnCase
+      import Escola.TestSupport
 
       alias EscolaWeb.Router.Helpers, as: Routes
 

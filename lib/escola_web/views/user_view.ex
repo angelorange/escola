@@ -1,8 +1,7 @@
 defmodule EscolaWeb.UserView do
   use EscolaWeb, :view
-  alias EscolaWeb.UserView
 
-  alias Escola.Accounts
+  alias EscolaWeb.UserView
 
   def render("index.json", %{users: users}) do
     %{data: render_many(users, UserView, "user.json")}
