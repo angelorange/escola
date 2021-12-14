@@ -3,4 +3,5 @@ defmodule Escola.Factory do
 
   use Escola.SchoolFactory
   use Escola.UserFactory
+  use Escola.StudentFactory
 end
