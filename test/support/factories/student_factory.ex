@@ -6,6 +6,7 @@ defmodule Escola.StudentFactory do
           ra: "400434056",
           year: "2018",
           school: build(:school),
+          title: "student",
           user: build(:user)
         }
       end

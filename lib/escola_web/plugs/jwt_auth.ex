@@ -6,9 +6,9 @@ defmodule EscolaWeb.Plugs.JwtAuth do
   @spec call(Conn.t(), term()) :: Conn.t()
   def call(conn, _opts) do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
-      {:ok, user_id} <- Escola.Token.verify(token) do
+      {:ok, map} <- Escola.Token.verify(token) do
       conn
-      |> assign(:current_user_id, user_id)
+      |> assign(:current_user, map)
     else
       _ ->
         conn

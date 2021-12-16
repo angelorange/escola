@@ -6,6 +6,17 @@ defmodule Escola.Profile do
   import Ecto.Query, warn: false
   alias Escola.Repo
 
+  @doc """
+  Returns a profile struct based on a profile title and id if exists.
+  """
+  @spec get_profile(String.t(), String.t() | Integer.t()) :: {:ok, term()} | {:error, :not_found}
+  def get_profile(profile, profile_id) do
+    case profile do
+      "student" -> get_student(profile_id)
+      _ -> {:error, :not_found}
+    end
+  end
+
   alias Escola.Profile.Student
 
   @doc """
@@ -100,5 +111,16 @@ defmodule Escola.Profile do
   """
   def change_student(%Student{} = student, attrs \\ %{}) do
     Student.changeset(student, attrs)
+  end
+
+  @doc """
+  Returns a single student.
+  """
+  @spec get_student(Integer.t() | String.t()) :: {:error, :not_found} | {:ok, Student.t()}
+  def get_student(id) do
+    case Repo.get(Student, id) do
+      nil -> {:error, :not_found}
+      student -> {:ok, student}
+    end
   end
 end

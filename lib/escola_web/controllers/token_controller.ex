@@ -1,7 +1,9 @@
 defmodule EscolaWeb.TokenController do
   use EscolaWeb, :controller
 
+  alias Escola.Utils
   alias Escola.Accounts
+  alias Escola.Profile
 
   action_fallback EscolaWeb.FallbackController
 
@@ -10,6 +12,15 @@ defmodule EscolaWeb.TokenController do
       conn
       |> put_status(201)
       |> json(%{token: Escola.Token.sign(user)})
+    end
+  end
+
+  def update(conn, %{"profile" => profile, "profile_id" => profile_id}) do
+    user_id = conn.assigns.current_user.user_id
+
+    with {:ok, profile} <- Profile.get_profile(profile, profile_id) do
+      token = Escola.Token.sign(%{user_id: user_id, profile: profile.title, profile_id: profile.id})
+      json(conn, %{token: token})
     end
   end
 end

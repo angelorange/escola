@@ -18,6 +18,7 @@ defmodule EscolaWeb.Router do
   scope "/api", EscolaWeb do
     pipe_through [:api, :jwt]
 
+    put "/token", TokenController, :update
     resources "/schools", SchoolController, except: [:new, :edit]
     resources "/users", UserController, except: [:new, :edit]
   end
