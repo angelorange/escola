@@ -9,6 +9,22 @@ defmodule EscolaWeb.TokenControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json"), user: user}
   end
 
+  describe "index" do
+    test "returns a list of all profiles for a user", %{conn: conn, user: user} do
+      student = insert(:student, %{user: user, year: "2019"})
+      student_two = insert(:student, %{year: "2022", user: user})
+      insert(:student)
+
+      conn =
+        login(conn, user)
+        |> get(Routes.token_path(conn, :index))
+
+      assert [expected, expected_two] = json_response(conn, 200)["data"]
+      assert expected["id"] == student.id
+      assert expected_two["year"] == student_two.year
+    end
+  end
+
   describe "create/2" do
     test "returns a token when valid data", %{conn: conn, user: user} do
       params = %{email: user.email, password: "somepassword"}

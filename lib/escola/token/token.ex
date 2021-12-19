@@ -8,7 +8,8 @@ defmodule Escola.Token do
   @token_age_secs 7 * 86_400
 
   @doc """
-  Create token for given user
+  Create token for given user.
+  If you send profile and profile_id, you can sign in with your profile.
   """
   @spec sign(User.t() | map) :: binary()
   def sign(%User{} = user) do

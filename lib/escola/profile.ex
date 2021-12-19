@@ -32,6 +32,12 @@ defmodule Escola.Profile do
     Repo.all(Student)
   end
 
+  def list_by_user(id) do
+    Student
+    |> where([s], s.user_id == ^id)
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single student.
 

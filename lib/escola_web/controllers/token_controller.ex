@@ -1,7 +1,6 @@
 defmodule EscolaWeb.TokenController do
   use EscolaWeb, :controller
 
-  alias Escola.Utils
   alias Escola.Accounts
   alias Escola.Profile
 
@@ -22,5 +21,12 @@ defmodule EscolaWeb.TokenController do
       token = Escola.Token.sign(%{user_id: user_id, profile: profile.title, profile_id: profile.id})
       json(conn, %{token: token})
     end
+  end
+
+  def index(conn, _params) do
+    ## lógica pra pegar profile que tem o user e year
+    user_id = conn.assigns.current_user.user_id
+    profiles = Profile.list_by_user(user_id)
+    render(conn, "index.json", profiles: profiles)
   end
 end
