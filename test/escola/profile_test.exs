@@ -75,4 +75,75 @@ defmodule Escola.ProfileTest do
       assert %Ecto.Changeset{} = Profile.change_student(student)
     end
   end
+
+  describe "teachers" do
+    alias Escola.Profile.Teacher
+
+    test "list_teachers/0 returns all teachers" do
+      teacher = insert(:teacher)
+      assert [subject] = Profile.list_teachers()
+      assert subject.id == teacher.id
+    end
+
+    test "get_teacher!/1 returns the teacher with given id" do
+      teacher = insert(:teacher)
+      assert subject = Profile.get_teacher!(teacher.id)
+      assert subject.id == teacher.id
+    end
+
+    test "create_teacher/1 with valid data creates a teacher" do
+      expected = params_with_assocs(:teacher)
+
+      assert {:ok, %Teacher{} = teacher} = Profile.create_teacher(expected)
+      assert teacher.title == expected.title
+      assert teacher.year == expected.year
+    end
+
+    test "create_teacher/1 with invalid data returns error changeset" do
+      params = params_for(:teacher, %{
+        year: nil,
+        title: nil,
+        school_id: nil,
+        user_id: nil
+      })
+
+      assert {:error, %Ecto.Changeset{}} = Profile.create_teacher(params)
+    end
+
+    test "update_teacher/2 with valid data updates the teacher" do
+      teacher = insert(:teacher)
+      updated = params_for(:teacher, %{
+        title: "teacher1",
+        year: "2022",
+      })
+
+      assert {:ok, %Teacher{} = teacher} = Profile.update_teacher(teacher, updated)
+      assert teacher.title == updated.title
+      assert teacher.year == updated.year
+    end
+
+    test "update_teacher/2 with invalid data returns error changeset" do
+      teacher = insert(:teacher)
+      params = %{
+        title: nil,
+        year: nil,
+        school_id: nil,
+        user_id: nil
+      }
+
+      assert {:error, %Ecto.Changeset{}} = Profile.update_teacher(teacher, params)
+      assert teacher.id == Profile.get_teacher!(teacher.id).id
+    end
+
+    test "delete_teacher/1 deletes the teacher" do
+      teacher = insert(:teacher)
+      assert {:ok, %Teacher{}} = Profile.delete_teacher(teacher)
+      assert_raise Ecto.NoResultsError, fn -> Profile.get_teacher!(teacher.id) end
+    end
+
+    test "change_teacher/1 returns a teacher changeset" do
+      teacher = insert(:teacher)
+      assert %Ecto.Changeset{} = Profile.change_teacher(teacher)
+    end
+  end
 end
