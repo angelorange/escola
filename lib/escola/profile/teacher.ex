@@ -12,7 +12,7 @@ defmodule Escola.Profile.Teacher do
     timestamps()
   end
 
-  @required ~w(title year school_id user_id title)a
+  @required ~w(title year school_id user_id)a
   @doc false
   def changeset(teacher, attrs) do
     teacher
