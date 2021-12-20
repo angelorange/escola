@@ -1,5 +1,5 @@
 defmodule Escola.ProfileTest do
-  use Escola.DataCase
+  use Escola.DataCase, async: true
 
   alias Escola.Profile
 
