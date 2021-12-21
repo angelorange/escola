@@ -19,6 +19,6 @@ defmodule Escola.Profile.Student do
     student
     |> cast(attrs, @required)
     |> validate_required(@required)
-    |> unique_constraint(:student_per_year_index)
+    |> unique_constraint(:ra_per_year, name: :students_ra_school_id_year_index)
   end
 end

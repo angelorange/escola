@@ -13,5 +13,8 @@ defmodule Escola.Repo.Migrations.CreateTeachers do
 
     create index(:teachers, [:school_id])
     create index(:teachers, [:user_id])
+
+    create unique_index(:teachers, [:school_id, :year, :user_id])
+
   end
 end

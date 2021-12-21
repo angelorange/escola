@@ -14,7 +14,7 @@ defmodule Escola.Repo.Migrations.CreateStudents do
     create index(:students, [:school_id])
     create index(:students, [:user_id])
 
-    create unique_index(:students, [:ra, :school_id, :year], name: :student_per_year_index)
+    create unique_index(:students, [:ra, :school_id, :year])
 
   end
 end

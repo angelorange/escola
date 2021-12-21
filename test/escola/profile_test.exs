@@ -29,6 +29,14 @@ defmodule Escola.ProfileTest do
       assert student.year == expected.year
     end
 
+    test "create_student/1 with valid data required" do
+      school = insert(:school)
+      insert(:student, %{ra: "123", year: "2018", school: school})
+      args = params_with_assocs(:student, %{ra: "123", year: "2018"}) |> Map.merge(%{school_id: school.id})
+
+      assert {:error, %Ecto.Changeset{}} = Profile.create_student(args)
+    end
+
     test "create_student/1 with invalid data returns error changeset" do
       params = params_for(:student, %{
         year: nil,
@@ -97,6 +105,15 @@ defmodule Escola.ProfileTest do
       assert {:ok, %Teacher{} = teacher} = Profile.create_teacher(expected)
       assert teacher.title == expected.title
       assert teacher.year == expected.year
+    end
+
+    test "create_teacher/1 with valid unique constraint data" do
+      school = insert(:school)
+      user = insert(:user)
+      insert(:teacher, %{school: school, year: "2019", user: user})
+      args = params_with_assocs(:teacher, %{year: "2019"}) |> Map.merge(%{school_id: school.id, user_id: user.id})
+
+      assert {:error, %Ecto.Changeset{}} = Profile.create_teacher(args)
     end
 
     test "create_teacher/1 with invalid data returns error changeset" do

@@ -18,5 +18,6 @@ defmodule Escola.Profile.Teacher do
     teacher
     |> cast(attrs, @required)
     |> validate_required(@required)
+    |> unique_constraint(:ra_per_year, name: :teachers_school_id_year_user_id_index)
   end
 end
