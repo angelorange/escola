@@ -163,4 +163,63 @@ defmodule Escola.ProfileTest do
       assert %Ecto.Changeset{} = Profile.change_teacher(teacher)
     end
   end
+
+  describe "supports" do
+    alias Escola.Profile.Support
+
+    test "list_supports/0 returns all supports" do
+      support = insert(:support)
+      assert [subject] = Profile.list_supports()
+    end
+
+    test "get_support!/1 returns the support with given id" do
+      support = insert(:support)
+      assert subject = Profile.get_support!(support.id)
+      assert subject.id == support.id
+    end
+
+    test "create_support/1 with valid data creates a support" do
+      expected = params_with_assocs(:support)
+
+      assert {:ok, %Support{} = support} = Profile.create_support(expected)
+      assert support.title == expected.title
+    end
+
+    test "create_support/1 with invalid data returns error changeset" do
+      params = params_for(:support, %{
+        title: nil,
+        user_id: nil
+      })
+      assert {:error, %Ecto.Changeset{}} = Profile.create_support(params)
+    end
+
+    test "update_support/2 with valid data updates the support" do
+      support = insert(:support)
+      updated = params_for(:support, %{title: "support"})
+
+      assert {:ok, %Support{} = support} = Profile.update_support(support, updated)
+      assert support.title == updated.title
+    end
+
+    test "update_support/2 with invalid data returns error changeset" do
+      support = insert(:support)
+      params = %{
+        title: nil,
+        user_id: nil
+      }
+      assert {:error, %Ecto.Changeset{}} = Profile.update_support(support, params)
+      assert support.id == Profile.get_support!(support.id).id
+    end
+
+    test "delete_support/1 deletes the support" do
+      support = insert(:support)
+      assert {:ok, %Support{}} = Profile.delete_support(support)
+      assert_raise Ecto.NoResultsError, fn -> Profile.get_support!(support.id) end
+    end
+
+    test "change_support/1 returns a support changeset" do
+      support = insert(:support)
+      assert %Ecto.Changeset{} = Profile.change_support(support)
+    end
+  end
 end

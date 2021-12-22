@@ -225,4 +225,100 @@ defmodule Escola.Profile do
   def change_teacher(%Teacher{} = teacher, attrs \\ %{}) do
     Teacher.changeset(teacher, attrs)
   end
+
+  alias Escola.Profile.Support
+
+  @doc """
+  Returns the list of supports.
+
+  ## Examples
+
+      iex> list_supports()
+      [%Support{}, ...]
+
+  """
+  def list_supports do
+    Repo.all(Support)
+  end
+
+  @doc """
+  Gets a single support.
+
+  Raises `Ecto.NoResultsError` if the Support does not exist.
+
+  ## Examples
+
+      iex> get_support!(123)
+      %Support{}
+
+      iex> get_support!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_support!(id), do: Repo.get!(Support, id)
+
+  @doc """
+  Creates a support.
+
+  ## Examples
+
+      iex> create_support(%{field: value})
+      {:ok, %Support{}}
+
+      iex> create_support(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_support(attrs \\ %{}) do
+    %Support{}
+    |> Support.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a support.
+
+  ## Examples
+
+      iex> update_support(support, %{field: new_value})
+      {:ok, %Support{}}
+
+      iex> update_support(support, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_support(%Support{} = support, attrs) do
+    support
+    |> Support.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a support.
+
+  ## Examples
+
+      iex> delete_support(support)
+      {:ok, %Support{}}
+
+      iex> delete_support(support)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_support(%Support{} = support) do
+    Repo.delete(support)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking support changes.
+
+  ## Examples
+
+      iex> change_support(support)
+      %Ecto.Changeset{data: %Support{}}
+
+  """
+  def change_support(%Support{} = support, attrs \\ %{}) do
+    Support.changeset(support, attrs)
+  end
 end
