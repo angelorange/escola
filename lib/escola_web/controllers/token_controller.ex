@@ -24,9 +24,13 @@ defmodule EscolaWeb.TokenController do
   end
 
   def index(conn, _params) do
-    ## lógica pra pegar profile que tem o user e year
     user_id = conn.assigns.current_user.user_id
-    profiles = Profile.list_by_user(user_id)
+
+    profile_student = Profile.list_student_by_user(user_id)
+    profile_teacher = Profile.list_teacher_by_user(user_id)
+    profile_support = Profile.list_support_by_user(user_id)
+
+    profiles = [profile_student, profile_support, profile_teacher] |> List.flatten()
     render(conn, "index.json", profiles: profiles)
   end
 end

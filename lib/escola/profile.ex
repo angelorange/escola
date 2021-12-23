@@ -18,6 +18,8 @@ defmodule Escola.Profile do
   end
 
   alias Escola.Profile.Student
+  alias Escola.Profile.Teacher
+  alias Escola.Profile.Support
 
   @doc """
   Returns the list of students.
@@ -32,9 +34,21 @@ defmodule Escola.Profile do
     Repo.all(Student)
   end
 
-  def list_by_user(id) do
+  def list_student_by_user(id) do
     Student
     |> where([s], s.user_id == ^id)
+    |> Repo.all()
+  end
+
+  def list_teacher_by_user(id) do
+    Teacher
+    |> where([t], t.user_id == ^id)
+    |> Repo.all()
+  end
+
+  def list_support_by_user(id) do
+    Support
+    |> where([su], su.user_id == ^id)
     |> Repo.all()
   end
 
