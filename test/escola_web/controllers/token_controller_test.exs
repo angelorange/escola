@@ -62,7 +62,7 @@ defmodule EscolaWeb.TokenControllerTest do
     end
 
     test "returns a error when profile_id doesnt exist", %{conn: conn, user: user} do
-      params = %{profile: insert(:student).title, profile_id: 10}
+      params = %{profile: insert(:student).title, profile_id: 0}
 
       conn =
         login(conn, user)

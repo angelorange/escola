@@ -170,6 +170,7 @@ defmodule Escola.ProfileTest do
     test "list_supports/0 returns all supports" do
       support = insert(:support)
       assert [subject] = Profile.list_supports()
+      assert subject.id == support.id
     end
 
     test "get_support!/1 returns the support with given id" do

@@ -4,27 +4,28 @@ defmodule EscolaWeb.UserControllerTest do
   import Escola.Factory
 
   setup %{conn: conn} do
-    user = insert(:user)
-    {:ok, conn: put_req_header(conn, "accept", "application/json"), user: user}
+    support = insert(:support)
+
+    {:ok, conn: put_req_header(conn, "accept", "application/json"), support: support}
   end
 
   describe "index" do
-    test "list all users", %{conn: conn, user: user} do
+    test "list all users", %{conn: conn, support: support} do
       conn =
-        login(conn, user)
+        login(conn, support)
         |> get(Routes.user_path(conn, :index))
 
       assert [expected] = json_response(conn, 200)["data"]
-      assert expected["id"] == user.id
+      assert expected["id"] == support.user_id
     end
   end
 
   describe "create user" do
-    test "renders user when data is valid", %{conn: conn, user: user} do
+    test "renders user when data is valid", %{conn: conn, support: support} do
       params = params_for(:user)
 
       conn =
-        login(conn, user)
+        login(conn, support)
         |> post(Routes.user_path(conn, :create), user: params)
 
       assert expected = json_response(conn, 201)["data"]
@@ -34,7 +35,7 @@ defmodule EscolaWeb.UserControllerTest do
   end
 
   describe "update user" do
-    test "renders user when data is valid", %{conn: conn, user: admin} do
+    test "renders user when data is valid", %{conn: conn, support: support} do
     user = insert(:user)
       params = %{
         name: user.name,
@@ -42,7 +43,7 @@ defmodule EscolaWeb.UserControllerTest do
       }
 
       conn =
-        login(conn, admin)
+        login(conn, support)
         |> put(Routes.user_path(conn, :update, user), user: params)
 
       assert expected = json_response(conn, 200)["data"]
@@ -52,11 +53,11 @@ defmodule EscolaWeb.UserControllerTest do
 
   describe "delete user" do
 
-    test "deletes chosen user", %{conn: conn, user: admin} do
+    test "deletes chosen user", %{conn: conn, support: support} do
       user = insert(:user)
 
       conn =
-        login(conn, admin)
+        login(conn, support)
         |> delete(Routes.user_path(conn, :delete, user))
 
       assert response(conn, 204)

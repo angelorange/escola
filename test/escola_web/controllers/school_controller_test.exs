@@ -4,17 +4,17 @@ defmodule EscolaWeb.SchoolControllerTest do
   import Escola.Factory
 
   setup %{conn: conn} do
-    user = insert(:user)
+    support = insert(:support)
 
-    {:ok, conn: put_req_header(conn, "accept", "application/json"),  user: user}
+    {:ok, conn: put_req_header(conn, "accept", "application/json"),  support: support}
   end
 
   describe "index" do
-    test "lists all schools", %{conn: conn, user: user} do
+    test "lists all schools, as Support", %{conn: conn, support: support} do
       school = insert(:school)
 
       conn =
-        login(conn, user)
+        login(conn, support)
         |> get(Routes.school_path(conn, :index))
 
       assert [subject] = json_response(conn, 200)["data"]
@@ -23,11 +23,11 @@ defmodule EscolaWeb.SchoolControllerTest do
   end
 
   describe "create school" do
-    test "renders school when data is valid", %{conn: conn, user: user} do
+    test "renders school when data is valid, as Support", %{conn: conn, support: support} do
       school = params_for(:school)
 
       conn =
-        login(conn, user)
+        login(conn, support)
         |> post(Routes.school_path(conn, :create), school: school)
 
       assert expected = json_response(conn, 201)["data"]
@@ -36,7 +36,7 @@ defmodule EscolaWeb.SchoolControllerTest do
       assert expected["name"] == school.name
     end
 
-    test "renders errors when data is invalid", %{conn: conn, user: user} do
+    test "renders errors when data is invalid, as Support", %{conn: conn, support: support} do
       params = %{
         name: nil,
         address: nil,
@@ -45,7 +45,7 @@ defmodule EscolaWeb.SchoolControllerTest do
       }
 
       conn =
-        login(conn, user)
+        login(conn, support)
         |> post(Routes.school_path(conn, :create), school: params)
 
       assert json_response(conn, 422)["errors"] != %{}
@@ -55,7 +55,7 @@ defmodule EscolaWeb.SchoolControllerTest do
   describe "update school" do
     setup [:create_school]
 
-    test "renders school when data is valid", %{conn: conn, school: school, user: user} do
+    test "renders school when data is valid, as Support", %{conn: conn, school: school, support: support} do
       params = %{
         name: school.name,
         cnpj: school.cnpj,
@@ -63,7 +63,7 @@ defmodule EscolaWeb.SchoolControllerTest do
         partnership: school.partnership
       }
       conn =
-        login(conn, user)
+        login(conn, support)
         |> put(Routes.school_path(conn, :update, school), school: params)
 
       assert expected = json_response(conn, 200)["data"]
@@ -73,7 +73,7 @@ defmodule EscolaWeb.SchoolControllerTest do
       assert expected["address"] == params.address
     end
 
-    test "renders errors when data is invalid", %{conn: conn, school: school, user: user} do
+    test "renders errors when data is invalid, as Support", %{conn: conn, school: school, support: support} do
       params = %{
         name: nil,
         address: nil,
@@ -81,7 +81,7 @@ defmodule EscolaWeb.SchoolControllerTest do
         partnership: nil
       }
       conn =
-        login(conn, user)
+        login(conn, support)
         |> put(Routes.school_path(conn, :update, school), school: params)
       assert json_response(conn, 422)["errors"] != %{}
     end
@@ -90,9 +90,9 @@ defmodule EscolaWeb.SchoolControllerTest do
   describe "delete school" do
     setup [:create_school]
 
-    test "deletes chosen school", %{conn: conn, school: school, user: user} do
+    test "deletes chosen school, as Support", %{conn: conn, school: school, support: support} do
       conn =
-        login(conn, user)
+        login(conn, support)
         |> delete(Routes.school_path(conn, :delete, school))
       assert response(conn, 204)
 

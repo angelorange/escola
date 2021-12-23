@@ -9,6 +9,11 @@ defmodule EscolaWeb.Router do
     plug EscolaWeb.Plugs.JwtAuth
   end
 
+  pipeline :support_auth do
+    plug EscolaWeb.Plugs.JwtAuth
+    plug  EscolaWeb.Plugs.SupportAuth
+  end
+
   scope "/api", EscolaWeb do
     pipe_through :api
 
@@ -20,9 +25,18 @@ defmodule EscolaWeb.Router do
 
     put "/token", TokenController, :update
     get "/token", TokenController, :index
-    resources "/schools", SchoolController, except: [:new, :edit]
-    resources "/users", UserController, except: [:new, :edit]
+
+    resources "/schools", SchoolController, only: [:index, :show]
+    resources "/users", UserController, only: [:index, :show]
   end
+
+  scope "/api", EscolaWeb do
+    pipe_through [:api, :support_auth]
+
+    resources "/schools", SchoolController, only: [:update, :create, :delete]
+    resources "/users", UserController, only: [:update, :create, :delete]
+  end
+
 
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
