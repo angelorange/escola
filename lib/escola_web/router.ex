@@ -28,6 +28,7 @@ defmodule EscolaWeb.Router do
 
     resources "/schools", SchoolController, only: [:index, :show]
     resources "/users", UserController, only: [:index, :show]
+    resources "/teachers", TeacherController, only: [:index, :show]
   end
 
   scope "/api", EscolaWeb do
@@ -35,6 +36,7 @@ defmodule EscolaWeb.Router do
 
     resources "/schools", SchoolController, only: [:update, :create, :delete]
     resources "/users", UserController, only: [:update, :create, :delete]
+    resources "/teachers", TeacherController, only: [:delete, :update, :create]
   end
 
 
