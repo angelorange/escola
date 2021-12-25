@@ -1,8 +1,6 @@
 defmodule EscolaWeb.TeacherControllerTest do
   use EscolaWeb.ConnCase, async: true
 
-  alias Escola.Profile.Teacher
-
   import Escola.Factory
 
   setup %{conn: conn} do
@@ -20,6 +18,7 @@ defmodule EscolaWeb.TeacherControllerTest do
         |> get(Routes.teacher_path(conn, :index))
 
       assert [expected] = json_response(conn, 200)["data"]
+      assert expected["id"] == teacher.id
     end
   end
 
