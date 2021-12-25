@@ -10,7 +10,7 @@ defmodule EscolaWeb.StudentControllerTest do
   end
 
   describe "index" do
-    test "list all student, as support", %{conn: conn, support: support} do
+    test "list all student, As Support", %{conn: conn, support: support} do
       student = insert(:student)
 
       conn =
@@ -23,7 +23,7 @@ defmodule EscolaWeb.StudentControllerTest do
   end
 
   describe "create student" do
-    test "renders student when data is valid, as support", %{conn: conn, support: support} do
+    test "renders student when data is valid, As Support", %{conn: conn, support: support} do
       school = insert(:school)
       user = insert(:user)
       student = params_for(:student, %{school_id: school.id, user_id: user.id})
