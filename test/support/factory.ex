@@ -7,4 +7,5 @@ defmodule Escola.Factory do
   use Escola.TeacherFactory
   use Escola.SupportFactory
   use Escola.DisciplineFactory
+  use Escola.GroupFactory
 end

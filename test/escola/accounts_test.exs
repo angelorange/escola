@@ -146,4 +146,66 @@ defmodule Escola.AccountsTest do
       assert %Ecto.Changeset{} = Accounts.change_user(user)
     end
   end
+
+  describe "groups" do
+    alias Escola.Accounts.Group
+
+    test "list_groups/0 returns all groups" do
+      group = insert(:group)
+      assert [subject] = Accounts.list_groups()
+      assert subject.id == group.id
+    end
+
+    test "get_group!/1 returns the group with given id" do
+      group = insert(:group)
+      assert subject = Accounts.get_group!(group.id)
+    end
+
+    test "create_group/1 with valid data creates a group" do
+      expected = params_with_assocs(:group)
+
+      assert {:ok, %Group{} = group} = Accounts.create_group(expected)
+      assert group.title == expected.title
+      assert group.year == expected.year
+    end
+
+    test "create_group/1 with invalid data returns error changeset" do
+      params = params_for(:group, %{
+        title: nil,
+        year: nil,
+        school_id: nil
+      })
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_group(params)
+    end
+
+    test "update_group/2 with valid data updates the group" do
+      group = insert(:group)
+      updated = params_for(:group, %{title: "turma A", year: "2022"})
+
+      assert {:ok, %Group{} = group} = Accounts.update_group(group, updated)
+      assert group.title == updated.title
+      assert group.year == updated.year
+    end
+
+    test "update_group/2 with invalid data returns error changeset" do
+      group = insert(:group)
+      params = %{
+        title: nil,
+        year: nil,
+        school_id: nil
+      }
+      assert {:error, %Ecto.Changeset{}} = Accounts.update_group(group, params)
+    end
+
+    test "delete_group/1 deletes the group" do
+      group = insert(:group)
+      assert {:ok, %Group{}} = Accounts.delete_group(group)
+      assert_raise Ecto.NoResultsError, fn -> Accounts.get_group!(group.id) end
+    end
+
+    test "change_group/1 returns a group changeset" do
+      group = insert(:group)
+      assert %Ecto.Changeset{} = Accounts.change_group(group)
+    end
+  end
 end
