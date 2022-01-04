@@ -208,4 +208,65 @@ defmodule Escola.AccountsTest do
       assert %Ecto.Changeset{} = Accounts.change_group(group)
     end
   end
+
+  describe "taught_groups" do
+    alias Escola.Accounts.TaughtGroup
+
+    test "list_taught_groups/0 returns all taught_groups" do
+      taught_group = insert(:taught_group)
+
+      assert [subject] = Accounts.list_taught_groups()
+    end
+
+    test "get_taught_group!/1 returns the taught_group with given id" do
+      taught_group = insert(:taught_group)
+      assert subject = Accounts.get_taught_group!(taught_group.id)
+    end
+
+    test "create_taught_group/1 with valid data creates a taught_group" do
+      expected = params_with_assocs(:taught_group)
+
+      assert {:ok, %TaughtGroup{} = taught_group} = Accounts.create_taught_group(expected)
+    end
+
+    test "create_taught_group/1 with invalid data returns error changeset" do
+      params = params_for(:taught_group, %{
+        group_id: nil,
+        teacher_id: nil,
+        discipline_id: nil
+      })
+
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_taught_group(params)
+    end
+
+    test "update_taught_group/2 with valid data updates the taught_group" do
+      discipline = insert(:discipline)
+      taught_group = insert(:taught_group)
+      updated = params_for(:taught_group, %{discipline_id: discipline.id})
+
+      assert {:ok, %TaughtGroup{} = taught_group} = Accounts.update_taught_group(taught_group, updated)
+    end
+
+    test "update_taught_group/2 with invalid data returns error changeset" do
+      taught_group = insert(:taught_group)
+      params = %{
+        discipline_id: nil,
+        group_id: nil,
+        teacher_id: nil
+      }
+      assert {:error, %Ecto.Changeset{}} = Accounts.update_taught_group(taught_group, params)
+      assert taught_group == Accounts.get_taught_group!(taught_group.id)
+    end
+
+    test "delete_taught_group/1 deletes the taught_group" do
+      taught_group = insert(:taught_group)
+      assert {:ok, %TaughtGroup{}} = Accounts.delete_taught_group(taught_group)
+      assert_raise Ecto.NoResultsError, fn -> Accounts.get_taught_group!(taught_group.id) end
+    end
+
+    test "change_taught_group/1 returns a taught_group changeset" do
+      taught_group = insert(:taught_group)
+      assert %Ecto.Changeset{} = Accounts.change_taught_group(taught_group)
+    end
+  end
 end
