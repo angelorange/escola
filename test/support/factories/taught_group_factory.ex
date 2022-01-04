@@ -3,9 +3,9 @@ defmodule Escola.TaughtGroupFactory do
     quote do
       def taught_group_factory do
         %Escola.Accounts.TaughtGroup{
-          discipline_id: build(:discipline).id,
-          group_id: build(:group).id,
-          teacher_id: build(:teacher).id,
+          discipline: build(:discipline),
+          group: build(:group),
+          teacher: build(:teacher),
         }
       end
     end

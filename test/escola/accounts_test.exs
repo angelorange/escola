@@ -255,7 +255,7 @@ defmodule Escola.AccountsTest do
         teacher_id: nil
       }
       assert {:error, %Ecto.Changeset{}} = Accounts.update_taught_group(taught_group, params)
-      assert taught_group == Accounts.get_taught_group!(taught_group.id)
+      assert subject = Accounts.get_taught_group!(taught_group.id)
     end
 
     test "delete_taught_group/1 deletes the taught_group" do

@@ -3,9 +3,9 @@ defmodule Escola.Accounts.TaughtGroup do
   import Ecto.Changeset
 
   schema "taught_groups" do
-    field :group_id, :id
-    field :teacher_id, :id
-    field :discipline_id, :id
+    belongs_to(:teacher, Escola.Profile.Teacher)
+    belongs_to(:group, Escola.Accounts.Group)
+    belongs_to(:discipline, Escola.Trait.Discipline)
 
     timestamps()
   end
