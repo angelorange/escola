@@ -159,6 +159,7 @@ defmodule Escola.AccountsTest do
     test "get_group!/1 returns the group with given id" do
       group = insert(:group)
       assert subject = Accounts.get_group!(group.id)
+      assert subject.id == group.id
     end
 
     test "create_group/1 with valid data creates a group" do
@@ -216,17 +217,20 @@ defmodule Escola.AccountsTest do
       taught_group = insert(:taught_group)
 
       assert [subject] = Accounts.list_taught_groups()
+      assert subject.id == taught_group.id
     end
 
     test "get_taught_group!/1 returns the taught_group with given id" do
       taught_group = insert(:taught_group)
       assert subject = Accounts.get_taught_group!(taught_group.id)
+      assert subject.id == taught_group.id
     end
 
     test "create_taught_group/1 with valid data creates a taught_group" do
       expected = params_with_assocs(:taught_group)
 
       assert {:ok, %TaughtGroup{} = taught_group} = Accounts.create_taught_group(expected)
+      assert taught_group.discipline_id == expected.discipline_id
     end
 
     test "create_taught_group/1 with invalid data returns error changeset" do
@@ -245,6 +249,7 @@ defmodule Escola.AccountsTest do
       updated = params_for(:taught_group, %{discipline_id: discipline.id})
 
       assert {:ok, %TaughtGroup{} = taught_group} = Accounts.update_taught_group(taught_group, updated)
+      assert taught_group.discipline_id == updated.discipline_id
     end
 
     test "update_taught_group/2 with invalid data returns error changeset" do
@@ -256,6 +261,7 @@ defmodule Escola.AccountsTest do
       }
       assert {:error, %Ecto.Changeset{}} = Accounts.update_taught_group(taught_group, params)
       assert subject = Accounts.get_taught_group!(taught_group.id)
+      assert subject.id == taught_group.id
     end
 
     test "delete_taught_group/1 deletes the taught_group" do
