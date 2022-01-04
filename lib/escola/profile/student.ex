@@ -10,6 +10,10 @@ defmodule Escola.Profile.Student do
     belongs_to(:school, Escola.Accounts.School)
     belongs_to(:user, Escola.Accounts.User)
 
+    many_to_many :groups, Escola.Accounts.Group,
+    join_through: "students_groups",
+    on_replace: :delete
+
     timestamps()
   end
 

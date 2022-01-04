@@ -8,6 +8,10 @@ defmodule Escola.Accounts.Group do
 
     belongs_to(:school, Escola.Accounts.School)
 
+    many_to_many :students, Escola.Profile.Student,
+    join_through: "students_groups",
+    on_replace: :delete
+
     timestamps()
   end
 
