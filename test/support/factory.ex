@@ -9,4 +9,5 @@ defmodule Escola.Factory do
   use Escola.DisciplineFactory
   use Escola.GroupFactory
   use Escola.TaughtGroupFactory
+  use Escola.GradeFactory
 end

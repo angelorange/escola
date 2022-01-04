@@ -129,4 +129,62 @@ defmodule Escola.LecturesTest do
       assert %Ecto.Changeset{} = Lectures.change_taught_group(taught_group)
     end
   end
+
+  describe "grades" do
+    alias Escola.Lectures.Grade
+
+    test "list_grades/0 returns all grades" do
+      grade = insert(:grade)
+      assert [subject] = Lectures.list_grades()
+      assert subject.id == grade.id
+    end
+
+    test "get_grade!/1 returns the grade with given id" do
+      grade = insert(:grade)
+      assert subject = Lectures.get_grade!(grade.id)
+      assert subject.id == grade.id
+    end
+
+    test "create_grade/1 with valid data creates a grade" do
+      expected = params_with_assocs(:grade)
+
+      assert {:ok, %Grade{} = grade} = Lectures.create_grade(expected)
+      assert grade.title == expected.title
+    end
+
+    test "create_grade/1 with invalid data returns error changeset" do
+      params = params_for(:grade, %{
+        title: nil
+      })
+      assert {:error, %Ecto.Changeset{}} = Lectures.create_grade(params)
+    end
+
+    test "update_grade/2 with valid data updates the grade" do
+      grade = insert(:grade)
+      updated = params_for(:grade, %{title: "n sei"})
+
+      assert {:ok, %Grade{} = grade} = Lectures.update_grade(grade, updated)
+      assert grade.title == updated.title
+    end
+
+    test "update_grade/2 with invalid data returns error changeset" do
+      grade = insert(:grade)
+      params = %{
+        title: nil
+      }
+      assert {:error, %Ecto.Changeset{}} = Lectures.update_grade(grade, params)
+      assert grade == Lectures.get_grade!(grade.id)
+    end
+
+    test "delete_grade/1 deletes the grade" do
+      grade = insert(:grade)
+      assert {:ok, %Grade{}} = Lectures.delete_grade(grade)
+      assert_raise Ecto.NoResultsError, fn -> Lectures.get_grade!(grade.id) end
+    end
+
+    test "change_grade/1 returns a grade changeset" do
+      grade = insert(:grade)
+      assert %Ecto.Changeset{} = Lectures.change_grade(grade)
+    end
+  end
 end
