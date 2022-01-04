@@ -1,4 +1,4 @@
-defmodule Escola.Trait.Discipline do
+defmodule Escola.Lectures.Discipline do
   use Ecto.Schema
   import Ecto.Changeset
 
