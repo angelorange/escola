@@ -223,4 +223,68 @@ defmodule Escola.ProfileTest do
       assert %Ecto.Changeset{} = Profile.change_support(support)
     end
   end
+
+  describe "authors" do
+    alias Escola.Profile.Author
+
+    test "list_authors/0 returns all authors" do
+      author = insert(:author)
+      assert [subject] = Profile.list_authors()
+      assert subject.id == author.id
+    end
+
+    test "get_author!/1 returns the author with given id" do
+      author = insert(:author)
+      assert subject = Profile.get_author!(author.id)
+      assert subject.id == author.id
+    end
+
+    test "create_author/1 with valid data creates a author" do
+      expected = params_with_assocs(:author)
+
+      assert {:ok, %Author{} = author} = Profile.create_author(expected)
+      assert author.title == expected.title
+    end
+
+    test "create_author/1 with invalid data returns error changeset" do
+      params = params_for(:author, %{
+        title: nil,
+        user_id: nil
+      })
+      assert {:error, %Ecto.Changeset{}} = Profile.create_author(params)
+    end
+
+    test "update_author/2 with valid data updates the author" do
+      author = insert(:author)
+      user = insert(:user)
+      updated = params_for(:author, %{
+        title: "author1",
+        user_id: user.id
+      })
+
+      assert {:ok, %Author{} = author} = Profile.update_author(author, updated)
+      assert author.title == updated.title
+    end
+
+    test "update_author/2 with invalid data returns error changeset" do
+      author = insert(:author)
+      params = %{
+        title: nil,
+        user_id: nil
+      }
+      assert {:error, %Ecto.Changeset{}} = Profile.update_author(author, params)
+      assert author.id == Profile.get_author!(author.id).id
+    end
+
+    test "delete_author/1 deletes the author" do
+      author = insert(:author)
+      assert {:ok, %Author{}} = Profile.delete_author(author)
+      assert_raise Ecto.NoResultsError, fn -> Profile.get_author!(author.id) end
+    end
+
+    test "change_author/1 returns a author changeset" do
+      author = insert(:author)
+      assert %Ecto.Changeset{} = Profile.change_author(author)
+    end
+  end
 end

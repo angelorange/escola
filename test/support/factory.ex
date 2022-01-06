@@ -11,4 +11,5 @@ defmodule Escola.Factory do
   use Escola.TaughtGroupFactory
   use Escola.GradeFactory
   use Escola.BookFactory
+  use Escola.AuthorFactory
 end
