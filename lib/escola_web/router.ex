@@ -11,7 +11,12 @@ defmodule EscolaWeb.Router do
 
   pipeline :support_auth do
     plug EscolaWeb.Plugs.JwtAuth
-    plug  EscolaWeb.Plugs.SupportAuth
+    plug EscolaWeb.Plugs.SupportAuth
+  end
+
+  pipeline :author_auth do
+    plug EscolaWeb.Plugs.JwtAuth
+    plug EscolaWeb.Plugs.AuthorAuth
   end
 
   scope "/api", EscolaWeb do
@@ -31,6 +36,7 @@ defmodule EscolaWeb.Router do
     resources "/teachers", TeacherController, only: [:index, :show]
     resources "/students", StudentController, only: [:index, :show]
     resources "/authors", AuthorController, only: [:index, :show]
+    resources "/books", BookController, only: [:index, :show]
   end
 
   scope "/api", EscolaWeb do
@@ -41,6 +47,12 @@ defmodule EscolaWeb.Router do
     resources "/students", StudentController, only: [:delete, :update, :create]
     resources "/teachers", TeacherController, only: [:delete, :update, :create]
     resources "/authors", AuthorController, only: [:delete, :update, :create]
+  end
+
+  scope "/api", EscolaWeb do
+    pipe_through [:api, :author_auth]
+
+    resources "/books", BookController, only: [:update, :create, :delete]
   end
 
 

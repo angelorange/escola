@@ -3,7 +3,7 @@ defmodule Escola.AuthorFactory do
     quote do
       def author_factory do
         %Escola.Profile.Author{
-          title: "author0",
+          title: "author",
           user: build(:user)
         }
       end
