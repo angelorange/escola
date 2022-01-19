@@ -18,7 +18,6 @@ defmodule EscolaWeb.BookControllerTest do
         |> post(Routes.book_path(conn, :create), book: book)
 
       assert expected = json_response(conn, 201)["data"]
-      IO.inspect(json_response(conn, 201)["data"])
       assert expected["title"] == book.title
       assert expected["summary"] == book.summary
       assert expected["description"] == book.description
