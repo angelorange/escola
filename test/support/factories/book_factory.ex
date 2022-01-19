@@ -5,7 +5,9 @@ defmodule Escola.BookFactory do
         %Escola.Libraries.Book{
           title: "percy jackson",
           summary: "nao sei",
-          description: "um mlk filho de poseidon"
+          description: "um mlk filho de poseidon",
+          discipline: build(:discipline),
+          grade: build(:grade)
         }
       end
     end

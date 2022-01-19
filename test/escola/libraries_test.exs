@@ -50,10 +50,12 @@ defmodule Escola.LibrariesTest do
       params = %{
         title: nil,
         description: nil,
-        summary: nil
+        summary: nil,
+        discipline_id: nil,
+        grade_id: nil
       }
       assert {:error, %Ecto.Changeset{}} = Libraries.update_book(book, params)
-      assert book == Libraries.get_book!(book.id)
+      assert book.id == Libraries.get_book!(book.id).id
     end
 
     test "delete_book/1 deletes the book" do

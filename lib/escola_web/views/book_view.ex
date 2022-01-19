@@ -16,7 +16,9 @@ defmodule EscolaWeb.BookView do
       id: book.id,
       title: book.title,
       summary: book.summary,
-      description: book.description
+      description: book.description,
+      discipline_id: book.discipline_id,
+      grade_id: book.grade_id
     }
   end
 end

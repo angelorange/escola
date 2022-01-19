@@ -8,6 +8,7 @@ defmodule Escola.Libraries.Book do
     field :title, :string
 
     belongs_to(:discipline, Escola.Lectures.Discipline)
+    belongs_to(:grade, Escola.Lectures.Grade)
 
     timestamps()
   end
@@ -15,7 +16,7 @@ defmodule Escola.Libraries.Book do
   @doc false
   def changeset(book, attrs) do
     book
-    |> cast(attrs, [:title, :summary, :description, :discipline_id])
-    |> validate_required([:title, :summary, :description, :discipline_id])
+    |> cast(attrs, [:title, :summary, :description, :discipline_id, :grade_id])
+    |> validate_required([:title, :summary, :description, :discipline_id, :grade_id])
   end
 end
